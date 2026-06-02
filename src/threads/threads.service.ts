@@ -36,4 +36,8 @@ export class ThreadsService {
 
     return await this.threadsRepository.save(thread);
   }
+
+  async delete(id: string) {
+    return await this.threadsRepository.delete(id);
+  }
 }
