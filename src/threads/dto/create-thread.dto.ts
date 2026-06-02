@@ -1,8 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiSchema } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsUUID, Length } from 'class-validator';
 
+@ApiSchema({
+  name: 'New Thread Payload',
+})
 export class CreateThreadDto {
   @ApiProperty({
+    type: String,
     description: 'The title of the thread',
     example: 'Hello, world!',
   })
