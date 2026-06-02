@@ -13,7 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: 'cyberchat.sqlite',
+      database: './data/cyberchat.sqlite',
       entities: [Thread, Comment, User],
       synchronize: false,
       logging: true,
