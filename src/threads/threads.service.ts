@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateThreadDto } from './dto/create-thread.dto';
 import { UpdateThreadDto } from './dto/update-thread.dto';
+import { ResponseThreadDto } from './dto/response-thread.dto';
+import { plainToInstance } from 'class-transformer';
 import { Thread } from './thread.entity';
 
 @Injectable()
@@ -17,16 +19,26 @@ export class ThreadsService {
     return await this.threadsRepository.save(newThread);
   }
 
-  async findAll(): Promise<Thread[]> {
+  async findAll(): Promise<ResponseThreadDto[]> {
     return await this.threadsRepository.find();
   }
 
-  async findOne(id: string): Promise<Thread> {
-    const thread = await this.threadsRepository.findOne({ where: { id } });
+  async findOne(id: string): Promise<ResponseThreadDto> {
+    const thread = await this.threadsRepository.findOne({
+      where: { id },
+      relations: {
+        author: true,
+        comments: {
+          author: true,
+        },
+      },
+    });
     if (!thread) {
       throw new NotFoundException(`Thread with ID "${id}" not found`);
     }
-    return thread;
+    return plainToInstance(ResponseThreadDto, thread, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async update(id: string, updateThreadDto: UpdateThreadDto): Promise<Thread> {

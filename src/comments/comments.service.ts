@@ -4,6 +4,9 @@ import { Repository } from 'typeorm';
 import { Comment } from './comment.entity.js';
 import { Thread } from '../threads/thread.entity.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
+import { plainToInstance } from 'class-transformer';
+import { ResponseCommentDto } from './dto/response-comment.dto.js';
+
 @Injectable()
 export class CommentsService {
   constructor(
@@ -30,12 +33,14 @@ export class CommentsService {
     return await this.commentsRepository.save(comment);
   }
 
-  async findOne(id: string): Promise<Comment> {
+  async findOne(id: string): Promise<ResponseCommentDto> {
     const comment = await this.commentsRepository.findOne({ where: { id } });
     if (!comment) {
       throw new NotFoundException(`Comment with ID "${id}" not found`);
     }
-    return comment;
+    return plainToInstance(ResponseCommentDto, comment, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async delete(id: string) {
