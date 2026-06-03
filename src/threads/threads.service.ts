@@ -20,7 +20,11 @@ export class ThreadsService {
   }
 
   async findAll(): Promise<ResponseThreadDto[]> {
-    return await this.threadsRepository.find();
+    const threads = await this.threadsRepository.find();
+
+    return plainToInstance(ResponseThreadDto, threads, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async findOne(id: string): Promise<ResponseThreadDto> {

@@ -14,6 +14,7 @@ import { Thread } from './thread.entity';
 import { ApiParam } from '@nestjs/swagger';
 import { CreateCommentDto } from 'src/comments/dto/create-comment.dto';
 import { CommentsService } from 'src/comments/comments.service';
+import { ResponseThreadDto } from './dto/response-thread.dto';
 
 @Controller('threads')
 export class ThreadsController {
@@ -28,12 +29,12 @@ export class ThreadsController {
   }
 
   @Get()
-  findAll(): Promise<Thread[]> {
+  findAll(): Promise<ResponseThreadDto[]> {
     return this.threadsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Thread> {
+  findOne(@Param('id') id: string): Promise<ResponseThreadDto> {
     return this.threadsService.findOne(id);
   }
 
