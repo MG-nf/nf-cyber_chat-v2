@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { IsAdminGuard } from 'src/auth/is-admin.guard';
 
 @Controller('comments')
 export class CommentsController {
@@ -19,7 +20,7 @@ export class CommentsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, IsAdminGuard)
   deleteComment(@Param('id', ParseUUIDPipe) id: string) {
     return this.commentsService.delete(id);
   }

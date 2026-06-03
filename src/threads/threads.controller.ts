@@ -17,6 +17,7 @@ import { CreateCommentDto } from 'src/comments/dto/create-comment.dto';
 import { CommentsService } from 'src/comments/comments.service';
 import { ResponseThreadDto } from './dto/response-thread.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { IsAdminGuard } from 'src/auth/is-admin.guard';
 
 @Controller('threads')
 export class ThreadsController {
@@ -66,7 +67,7 @@ export class ThreadsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, IsAdminGuard)
   async deleteThread(@Param('id') id: string) {
     return this.threadsService.delete(id);
   }
