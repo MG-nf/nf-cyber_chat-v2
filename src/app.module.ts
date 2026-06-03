@@ -14,7 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // This is the magic flag
+      isGlobal: true,
     }),
     AuthModule,
     TypeOrmModule.forRoot({
