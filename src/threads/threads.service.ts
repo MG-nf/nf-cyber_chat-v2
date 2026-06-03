@@ -46,9 +46,14 @@ export class ThreadsService {
   }
 
   async update(id: string, updateThreadDto: UpdateThreadDto): Promise<Thread> {
-    const thread = await this.findOne(id);
+    const thread = await this.threadsRepository.preload({
+      id: id,
+      ...updateThreadDto,
+    });
 
-    Object.assign(thread, updateThreadDto);
+    if (!thread) {
+      throw new NotFoundException(`Thread #${id} not found`);
+    }
 
     return await this.threadsRepository.save(thread);
   }

@@ -9,9 +9,14 @@ import { Comment } from './comments/comment.entity';
 import { User } from './users/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // This is the magic flag
+    }),
+    AuthModule,
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
       database: './data/cyberchat.sqlite',
@@ -22,7 +27,6 @@ import { AuthModule } from './auth/auth.module';
     ThreadsModule,
     CommentsModule,
     UsersModule,
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
