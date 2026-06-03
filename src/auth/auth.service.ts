@@ -16,7 +16,6 @@ export class AuthService {
     password: string,
   ): Promise<Omit<User, 'password'> | null> {
     const user: User | null = await this.usersService.findByUsername(username);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     if (user && (await bcrypt.compare(password, user.password))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _, ...result } = user;
@@ -29,7 +28,7 @@ export class AuthService {
     const payload = {
       name: user.username,
       sub: user.id,
-      //roles: user.roles,
+      role: user.role,
     };
     return {
       access_token: this.jwtService.sign(payload),

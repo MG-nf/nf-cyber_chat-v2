@@ -16,6 +16,12 @@ export class User {
   @Column({ type: 'varchar' })
   password!: string;
 
+  @Column({
+    type: 'varchar',
+    default: 'user',
+  })
+  role!: string;
+
   @OneToMany(() => Thread, (thread: Thread) => thread.author)
   threads!: Thread[];
 
