@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ThreadsService } from './threads.service';
 import { CreateThreadDto } from './dto/create-thread.dto';
@@ -15,6 +16,7 @@ import { ApiParam } from '@nestjs/swagger';
 import { CreateCommentDto } from 'src/comments/dto/create-comment.dto';
 import { CommentsService } from 'src/comments/comments.service';
 import { ResponseThreadDto } from './dto/response-thread.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('threads')
 export class ThreadsController {
@@ -23,6 +25,7 @@ export class ThreadsController {
     private readonly commentsService: CommentsService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createThreadDto: CreateThreadDto): Promise<Thread> {
     return this.threadsService.create(createThreadDto);
@@ -38,6 +41,7 @@ export class ThreadsController {
     return this.threadsService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -46,6 +50,7 @@ export class ThreadsController {
     return this.threadsService.update(id, updateThreadDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post(':id/comment')
   @ApiParam({
     name: 'id',
@@ -61,6 +66,7 @@ export class ThreadsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deleteThread(@Param('id') id: string) {
     return this.threadsService.delete(id);
   }
