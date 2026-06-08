@@ -1,5 +1,4 @@
 import { Expose, Type } from 'class-transformer';
-import { Comment } from 'src/comments/comment.entity';
 
 export class ResponseCommentDto {
   @Expose()
